@@ -1,11 +1,11 @@
 /*
- * Format for Selenium Remote Control Python client.
+ * Format for gocept.selenium.
  */
 
 var subScriptLoader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
 subScriptLoader.loadSubScript('chrome://selenium-ide/content/formats/remoteControl.js', this);
 
-this.name = "chrome://selenium-ide/content/formats/python-rc";
+this.name = "chrome://selenium-ide/content/formats/python-gs";
 
 function testMethodName(testName) {
 	return "test_" + underscore(testName);
@@ -30,12 +30,14 @@ string = function(value) {
 };
 
 function assertTrue(expression) {
-	return "self.failUnless(" + expression.toString() + ")";
+	return "self.assertTrue(" + expression.toString() + ")";
 }
 
 function assertFalse(expression) {
-	return "self.failIf(" + expression.toString() + ")";
+	return "self.assertFalse(" + expression.toString() + ")";
 }
+
+/* XXX below this: not yet adapted */
 
 function verify(statement) {
 	return "try: " + statement + "\n" +
