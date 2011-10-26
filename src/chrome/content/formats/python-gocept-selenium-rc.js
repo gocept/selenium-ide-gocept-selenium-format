@@ -3,7 +3,7 @@
  */
 
 var subScriptLoader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
-subScriptLoader.loadSubScript('chrome://selenium-ide/content/formats/remoteControl.js', this);
+subScriptLoader.loadSubScript('chrome://python-formatters-gocept-selenium/content/formats/gsRemoteControl.js', this);
 
 this.name = "chrome://selenium-ide/content/formats/python-gs";
 
@@ -30,6 +30,7 @@ string = function(value) {
 };
 
 function assertTrue(expression) {
+    window.dump(expression);
 	return "self.assertTrue(" + expression.toString() + ")";
 }
 
@@ -40,8 +41,7 @@ function assertFalse(expression) {
 /* XXX below this: not yet adapted */
 
 function verify(statement) {
-	return "try: " + statement + "\n" +
-		"except AssertionError, e: self.verificationErrors.append(str(e))";
+	return statement;
 }
 
 function verifyTrue(expression) {
@@ -146,7 +146,7 @@ CallSelenium.prototype.toString = function() {
 	if (options.receiver) {
 		result += options.receiver + '.';
 	}
-	result += underscore(this.message);
+	result += this.message;
 	result += '(';
 	for (var i = 0; i < this.args.length; i++) {
 		result += this.args[i];
