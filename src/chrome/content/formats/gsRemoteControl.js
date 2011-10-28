@@ -276,75 +276,86 @@ function xlateValue(type, value) {
 	}
 }
 
+//function formatCommand(command) {
+//	var line = null;
+//	if (command.type == 'command') {
+//		var def = command.getDefinition();
+//		if (def && def.isAccessor) {
+//			var call = new CallSelenium(command.command);
+//			for (var i = 0; i < def.params.length; i++) {
+//				call.args.push(xlateArgument(command.getParameterAt(i)));
+//			}
+//            line = call.toString()
+//		} else if (this.pause && 'pause' == command.command) {
+//			line = pause(command.target);
+//		} else if ('store' == command.command) {
+//			addDeclaredVar(command.value);
+//			line = statement(assignToVariable('String', command.value, xlateArgument(command.target)));
+//	    } else if (this.set && command.command.match(/^set/)) {
+//	        line = set(command.command, command.target);
+//		} else if (command.command.match(/^(assert|verify)Selected$/)) {
+//			var optionLocator = command.value;
+//			var flavor = 'Label';
+//			var value = optionLocator;
+//			var r = /^(index|label|value|id)=(.*)$/.exec(optionLocator);
+//			if (r) {
+//				flavor = r[1].replace(/^[a-z]/, function(str) { return str.toUpperCase() });
+//				value = r[2];
+//			}
+//			var method = (!this.assertOrVerifyFailureOnNext && command.command.match(/^verify/)) ? 'verify' : 'assert';
+//			var call = new CallSelenium("getSelected" + flavor);
+//			call.args.push(xlateArgument(command.target));
+//			var eq = seleniumEquals('String', value, call);
+//			line = statement(eq[method]());
+//		} else if (def) {
+//			if (def.name.match(/^(assert|verify)(Error|Failure)OnNext$/)) {
+//				this.assertOrVerifyFailureOnNext = true;
+//				this.assertFailureOnNext = def.name.match(/^assert/);
+//				this.verifyFailureOnNext = def.name.match(/^verify/);
+//			} else {
+//				var call = new CallSelenium(command.command);
+//                if ("open" == def.name && options.urlSuffix && !command.target.match(/^\w+:\/\//)) {
+//                    // urlSuffix is used to translate core-based test
+//                    call.args.push(xlateArgument(options.urlSuffix + command.target));
+//                } else {
+//                    for (var i = 0; i < def.params.length; i++) {
+//                        call.args.push(xlateArgument(command.getParameterAt(i)));
+//                    }
+//                }
+//				line = statement(call, command);
+//			}
+//		} else {
+//			this.log.info("unknown command: <" + command.command + ">");
+//			// TODO
+//			var call = new CallSelenium(command.command);
+//			if ((command.target != null && command.target.length > 0)
+//				|| (command.value != null && command.value.length > 0)) {
+//				call.args.push(string(command.target));
+//				if (command.value != null && command.value.length > 0) {
+//					call.args.push(string(command.value));
+//				}
+//			}
+//			line = formatComment(new Comment(statement(call)));
+//		}
+//	}
+//	if (line && this.assertOrVerifyFailureOnNext) {
+//		line = assertOrVerifyFailure(line, this.assertFailureOnNext);
+//		this.assertOrVerifyFailureOnNext = false;
+//		this.assertFailureOnNext = false;
+//		this.verifyFailureOnNext = false;
+//	}
+//	return line;
+//}
+
 function formatCommand(command) {
 	var line = null;
-	if (command.type == 'command') {
-		var def = command.getDefinition();
-		if (def && def.isAccessor) {
-			var call = new CallSelenium(command.command);
-			for (var i = 0; i < def.params.length; i++) {
-				call.args.push(xlateArgument(command.getParameterAt(i)));
-			}
-            line = call.toString()
-		} else if (this.pause && 'pause' == command.command) {
-			line = pause(command.target);
-		} else if ('store' == command.command) {
-			addDeclaredVar(command.value);
-			line = statement(assignToVariable('String', command.value, xlateArgument(command.target)));
-	    } else if (this.set && command.command.match(/^set/)) {
-	        line = set(command.command, command.target);
-		} else if (command.command.match(/^(assert|verify)Selected$/)) {
-			var optionLocator = command.value;
-			var flavor = 'Label';
-			var value = optionLocator;
-			var r = /^(index|label|value|id)=(.*)$/.exec(optionLocator);
-			if (r) {
-				flavor = r[1].replace(/^[a-z]/, function(str) { return str.toUpperCase() });
-				value = r[2];
-			}
-			var method = (!this.assertOrVerifyFailureOnNext && command.command.match(/^verify/)) ? 'verify' : 'assert';
-			var call = new CallSelenium("getSelected" + flavor);
-			call.args.push(xlateArgument(command.target));
-			var eq = seleniumEquals('String', value, call);
-			line = statement(eq[method]());
-		} else if (def) {
-			if (def.name.match(/^(assert|verify)(Error|Failure)OnNext$/)) {
-				this.assertOrVerifyFailureOnNext = true;
-				this.assertFailureOnNext = def.name.match(/^assert/);
-				this.verifyFailureOnNext = def.name.match(/^verify/);
-			} else {
-				var call = new CallSelenium(command.command);
-                if ("open" == def.name && options.urlSuffix && !command.target.match(/^\w+:\/\//)) {
-                    // urlSuffix is used to translate core-based test
-                    call.args.push(xlateArgument(options.urlSuffix + command.target));
-                } else {
-                    for (var i = 0; i < def.params.length; i++) {
-                        call.args.push(xlateArgument(command.getParameterAt(i)));
-                    }
-                }
-				line = statement(call, command);
-			}
-		} else {
-			this.log.info("unknown command: <" + command.command + ">");
-			// TODO
-			var call = new CallSelenium(command.command);
-			if ((command.target != null && command.target.length > 0)
-				|| (command.value != null && command.value.length > 0)) {
-				call.args.push(string(command.target));
-				if (command.value != null && command.value.length > 0) {
-					call.args.push(string(command.value));
-				}
-			}
-			line = formatComment(new Comment(statement(call)));
-		}
-	}
-	if (line && this.assertOrVerifyFailureOnNext) {
-		line = assertOrVerifyFailure(line, this.assertFailureOnNext);
-		this.assertOrVerifyFailureOnNext = false;
-		this.assertFailureOnNext = false;
-		this.verifyFailureOnNext = false;
-	}
-	return line;
+    var def = command.getDefinition();
+    var call = new CallSelenium(command.command);
+    for (var i = 0; i < def.params.length; i++) {
+        call.args.push(xlateArgument(command.getParameterAt(i)));
+    }
+    line = call.toString();
+    return line;
 }
 
 this.remoteControl = true;
