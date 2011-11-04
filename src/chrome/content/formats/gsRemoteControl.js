@@ -354,6 +354,10 @@ function formatCommand(command) {
     for (var i = 0; i < def.params.length; i++) {
         call.args.push(xlateArgument(command.getParameterAt(i)));
     }
+    if (command.command.match(/^(assert|verify)/)) {
+        // TODO: next statement should not be called for "*Present"-commands
+        call.args.push(xlateArgument(command.value));
+    }
     line = call.toString();
     return line;
 }
