@@ -1,2 +1,8 @@
+syntax: glob
 .idea
 selenium-ide-gocept-selenium-format.xpi
+test/.installed.cfg
+test/.mr.developer.cfg
+test/bin
+test/src/testsidegself.egg-info
+test/develop-eggs
