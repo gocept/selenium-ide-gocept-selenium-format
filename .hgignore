@@ -6,3 +6,6 @@ test/.mr.developer.cfg
 test/bin
 test/src/testsidegself.egg-info
 test/develop-eggs
+test/parts
+test/sources
+*.pyc

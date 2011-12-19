@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.0'
+version = '0.1'
 
 setup(
     name='testsidegself',
@@ -14,5 +14,12 @@ setup(
     packages=find_packages('src'),
     package_dir = {'': 'src'},
     zip_safe=False,
-    install_requires=[],
+    install_requires=[
+        'lxml',
+    ],
+    entry_points="""
+      [console_scripts]
+      extract-commands = testsidegself.extract:extract_commands
+      compare-result = testsidegself.compare:compare_result
+    """
     )
