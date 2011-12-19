@@ -1,7 +1,20 @@
+=======
 Purpose
 =======
 
 Formatter for `Selenium IDE`_ which produces `gocept.selenium`_ compatible code.
+
+=====
+Usage
+=====
+
+Install it in Firefox as Add-on, it provides a new export and clipboard
+formatter for `Selenium IDE`.
+
+
+=========
+Internals
+=========
 
 Create xpi file
 ===============
