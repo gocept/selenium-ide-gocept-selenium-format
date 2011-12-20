@@ -39,7 +39,7 @@ function indents(num) {
 		return str;
 	}
 
-    try {        
+    try {
     	var indent = options.indent;
     	if ('tab' == indent) {
     		return repeat("\t", num);
@@ -349,16 +349,30 @@ function xlateValue(type, value) {
 
 function formatCommand(command) {
 	var line = null;
-    var def = command.getDefinition();
-    var call = new CallSelenium(command.command);
-    for (var i = 0; i < def.params.length; i++) {
-        call.args.push(xlateArgument(command.getParameterAt(i)));
+    if (command.type == 'command') {
+        var call = new CallSelenium(command.command);
+        if (command.target != "") {
+            // Some assert* commands have a definition but it does not
+            // contain the target parameter.
+            call.args.push(xlateArgument(command.target));
+        }
+        if (command.value) {
+            // store* commands use this attribute for the variable name
+            call.args.push(xlateArgument(command.value));
+        }
+        line = call.toString();
+    } else {
+        this.log.info("unknown command: <" + command.command + ">");
+        // TODO
+        var call = new CallSelenium(command.command);
+        if (command.target != null && command.target.length > 0) {
+            call.args.push(string(command.target));
+        }
+        if (command.value != null && command.value.length > 0) {
+            call.args.push(string(command.value));
+        }
+        line = formatComment(new Comment(statement(call)));
     }
-    if (command.command.match(/^(assert|verify)/)) {
-        // TODO: next statement should not be called for "*Present"-commands
-        call.args.push(xlateArgument(command.value));
-    }
-    line = call.toString();
     return line;
 }
 
