@@ -31,12 +31,7 @@ def write_test_file(commands, dest_path):
     f.write(TEMPLATE_HEAD)
     for command in commands:
         f.write('<tr>\n')
-        for index in range(max(len(command), 3)):
-            if index > 2:
-                # There are some commands which are not useable from
-                # Selenium IDE because they expect 3 arguments.
-                # See http://code.google.com/p/selenium/issues/detail?id=619
-                continue
+        for index in range(3):
             try:
                 value = command[index]
             except IndexError:
