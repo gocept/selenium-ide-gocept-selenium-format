@@ -43,17 +43,13 @@ function format(testCase, name) {
 	result += header;
 	this.commandCharIndex = header.length;
 	testCase.formatLocal(this.name).header = header;
-	result += formatCommands(testCase.commands);
+    result += formatCommands(testCase.commands);
 	if (this.formatFooter) {
 		footer = formatFooter(testCase);
 	}
 	result += footer;
 	testCase.formatLocal(this.name).footer = footer;
 	return result;
-}
-
-function filterForRemoteControl(originalCommands) {
-	return originalCommands;
 }
 
 function addIndent(lines) {
@@ -63,7 +59,6 @@ function addIndent(lines) {
 }
 
 function formatCommands(commands) {
-	commands = filterForRemoteControl(commands);
 	if (this.lastIndent == null) {
 		this.lastIndent = '';
 	}
