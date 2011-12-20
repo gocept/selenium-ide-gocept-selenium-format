@@ -178,11 +178,11 @@ this.options = {
 	'        self.verificationErrors = []\n' +
 	'        self.selenium = selenium("${rcHost}", ${rcPort}, "${environment}", "${baseURL}")\n' +
 	'        self.selenium.start()\n' +
-	'    \n' +
+	'\n' +
 	'    def ${methodName}(self):\n' +
 	'        ${receiver} = self.selenium\n',
 	footer:
-	'    \n' +
+	'\n' +
 	'    def tearDown(self):\n' +
 	'        self.selenium.stop()\n' +
 	'        self.assertEqual([], self.verificationErrors)\n' +
@@ -193,7 +193,7 @@ this.options = {
 	initialIndents: '2'
 };
 
-this.configForm = 
+this.configForm =
 	'<description>Variable for Selenium instance</description>' +
 	'<textbox id="options_receiver" />' +
 	'<description>Selenium RC host</description>' +
